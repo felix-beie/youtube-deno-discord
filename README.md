@@ -1,4 +1,6 @@
 ![banner](https://user-images.githubusercontent.com/56651600/156890936-45d1a056-e84a-48ab-8125-26f178d8830c.png)
+![workflow_codeql](https://github.com/felix-beie/youtube-deno-discord/actions/workflows/codeql.yml/badge.svg)
+![workflow_deno](https://github.com/felix-beie/youtube-deno-discord/actions/workflows/deno.yml/badge.svg)
 
 **Youtube Deno Discord is a Youtube Extension for a Deno-based [Harmony](https://deno.land/x/harmony) Discord Bot**
 
