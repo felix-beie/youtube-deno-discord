@@ -1,4 +1,4 @@
-import { assert } from "./deps.ts"
+import { assert } from "../deps.ts"
 
 const GOOGLE_API_KEY = Deno.env.get("GOOGLE_API_KEY")
 

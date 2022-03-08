@@ -1,7 +1,5 @@
-import { CommandClient, Command, CommandContext, Extension, soxa } from "./deps.ts"
-
-const GOOGLE_API_KEY = Deno.env.get("GOOGLE_API_KEY")
-const YT_BASE_URL = "https://www.googleapis.com/youtube/v3/"
+import { CommandClient, Command, CommandContext, Extension } from "./deps.ts"
+import { Channel } from "./src/commands/channel.ts"
 
 export class YoutubeExtension extends Extension {
     name = "youtube"
@@ -30,23 +28,5 @@ export class Youtube extends Command {
         genUsage = genUsage.slice(0, -1)
         genUsage += "]"
         return genUsage
-    }
-}
-
-class Channel extends Command {
-    name = "channel"
-    usage = "**USAGE**: !yt channel [CHANNEL TITLE]"
-    description = "Shows a list of searched channels"
-
-    onMissingArgs(ctx: CommandContext): void {
-        ctx.message.reply(this.usage)
-    }
-
-    onError(_ctx: CommandContext, err: Error) {
-        console.error(err)
-    }
-
-    execute(ctx: CommandContext): void {
-        ctx.message.reply("it works.")
     }
 }
