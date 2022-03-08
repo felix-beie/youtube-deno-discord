@@ -13,7 +13,7 @@ export class YoutubeExtension extends Extension {
 export class Youtube extends Command {
     name = "youtube"
     subCommands = [ new Channel() ]
-    usage = "**USAGE**: !yt ["
+    usage = "**USAGE**: !youtube ["
     description = "Base command for all youtube functionality of the bot"
 
     execute(ctx: CommandContext): void {
@@ -23,7 +23,7 @@ export class Youtube extends Command {
     private getUsage(): string {
         let genUsage = this.usage
         this.getSubCommands().forEach((cmd: Command) => {
-            genUsage += cmd.toString() + "|"
+            genUsage += cmd.name + "|"
         })
         genUsage = genUsage.slice(0, -1)
         genUsage += "]"
