@@ -76,7 +76,9 @@ export class Channel extends Command {
         const channelEmbed = new Embed({
             title: `Channel: \`${channelData.items[0].snippet.title}\``,
             thumbnail: channelData.items[0].snippet.thumbnails.default,
-            description: `**Description:**\n ${channelData.items[0].snippet.description}\n`,
+            description: 
+                `**Description:**\n ${channelData.items[0].snippet.description}\n
+                **Channel Link:**\n https://www.youtube.com/channel/${channelId}`,
             fields: [
                 { name: "Country", value: channelData.items[0].snippet.country, inline: true }, 
                 { name: "Subscribers", value: channelData.items[0].statistics.subscriberCount, inline: true }, 
