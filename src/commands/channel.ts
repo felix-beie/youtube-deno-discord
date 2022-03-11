@@ -11,7 +11,7 @@ export class Channel extends Command {
     name = "channel"
     usage = "**USAGE**: !youtube channel [CHANNEL TITLE]"
     description = "Shows a list of searched channels"
-    contentArg: ContentArgument = { name: "test", match: "content" }
+    contentArg: ContentArgument = { name: "channel_title", match: "content" }
     args = [ this.contentArg ]
 
     onMissingArgs(ctx: CommandContext): void {
