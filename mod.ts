@@ -1,5 +1,6 @@
 import { CommandClient, Command, CommandContext, Extension } from "./deps.ts"
 import { Channel } from "./src/commands/channel.ts"
+import { Video } from "./src/commands/video.ts"
 
 export class YoutubeExtension extends Extension {
     name = "youtube"
@@ -12,7 +13,7 @@ export class YoutubeExtension extends Extension {
 
 export class Youtube extends Command {
     name = "youtube"
-    subCommands = [ new Channel() ]
+    subCommands = [ new Channel(), new Video() ]
     usage = "**USAGE**: !youtube ["
     description = "Base command for all youtube functionality of the bot"
 
