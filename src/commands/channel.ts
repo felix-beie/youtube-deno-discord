@@ -1,4 +1,4 @@
-import { Command, CommandContext, soxa } from "../../deps.ts"
+import { Command, CommandContext, soxa, ContentArgument } from "../../deps.ts"
 import { Embed } from "https://deno.land/x/harmony@v2.5.1/mod.ts"
 
 const GOOGLE_API_KEY = Deno.env.get("GOOGLE_API_KEY")
@@ -8,8 +8,9 @@ export class Channel extends Command {
     name = "channel"
     usage = "**USAGE**: !youtube channel [CHANNEL TITLE]"
     description = "Shows a list of searched channels"
+    contentArg: ContentArgument = { name: "test", match: "content" }
+    args = [ this.contentArg ]
 
-    // called when no argument is given
     onMissingArgs(ctx: CommandContext): void {
         ctx.message.reply(this.usage)
     }
@@ -35,6 +36,9 @@ export class Channel extends Command {
             color: 0xDE3C47,
         })
 
-        ctx.message.reply(embed)
+        const message = await ctx.message.reply(embed)
+        message.addReaction("1️⃣")
+        message.addReaction("2️⃣")
+        message.addReaction("3️⃣")
     }
 }
