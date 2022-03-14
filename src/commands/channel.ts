@@ -60,6 +60,7 @@ export class Channel extends Command {
         })
     }
 
+    // deno-lint-ignore no-explicit-any
     private async getChannelDetails(ctx: CommandContext, data: any ,message: Message, reaction: undefined | MessageReaction) {
         await message.delete()
 

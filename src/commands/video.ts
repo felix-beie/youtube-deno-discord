@@ -54,6 +54,7 @@ export class Video extends Command {
         })
     }
 
+    // deno-lint-ignore no-explicit-any
     private async getVideoDetails(ctx: CommandContext, data: any, message: Message, reaction: undefined | MessageReaction) {
         await message.delete()
 
