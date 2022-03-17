@@ -1,8 +1,6 @@
-import { Command, CommandContext, soxa, ContentArgument, CommandClient } from "../../deps.ts"
+import { Command, CommandContext, ContentArgument, CommandClient } from "../../deps.ts"
 import { Embed, Message, MessageReaction, User } from "https://deno.land/x/harmony@v2.5.1/mod.ts"
-
-const GOOGLE_API_KEY = Deno.env.get("GOOGLE_API_KEY")
-const API_BASE_URL = "https://www.googleapis.com/youtube/v3/"
+import { searchVideo, getVideoById } from "../utility/youtubeAPI.ts"
 
 const reactionEmotes = ["1️⃣", "2️⃣", "3️⃣"]
 
@@ -25,8 +23,7 @@ export class Video extends Command {
 
     async execute(ctx: CommandContext): Promise<void> {
         const search_param = ctx.rawArgs.join(" ")
-        const req = await soxa.get(API_BASE_URL + "search?part=snippet&maxResults=3&q=" + encodeURIComponent(search_param) + "&type=video&key=" + GOOGLE_API_KEY)
-        const data = req.data
+        const data = await searchVideo(search_param)
 
         const embed = new Embed({
             title: `Search results for \`${search_param}\``, 
@@ -64,8 +61,7 @@ export class Video extends Command {
             }
         })
 
-        const videoReq = await soxa.get(API_BASE_URL + "videos?part=statistics%2Csnippet&id=" + videoId + "&key=" + GOOGLE_API_KEY)
-        const videoData = videoReq.data
+        const videoData = await getVideoById(videoId)
 
         console.log(videoData)
 
