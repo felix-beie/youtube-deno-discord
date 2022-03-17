@@ -1,8 +1,7 @@
 import { Command, CommandContext, ContentArgument, CommandClient } from "../../deps.ts"
 import { Embed, Message, MessageReaction, User } from "https://deno.land/x/harmony@v2.5.1/mod.ts"
 import { searchVideo, getVideoById } from "../utility/youtubeAPI.ts"
-
-const reactionEmotes = ["1️⃣", "2️⃣", "3️⃣"]
+import { addReactions, getItemIdFromReaction } from "../utility/utilityFunctions.ts"
 
 export class Video extends Command {
     name = "video"
@@ -40,9 +39,7 @@ export class Video extends Command {
         })
 
         await ctx.message.reply(embed).then( async message => {
-            await message.addReaction(reactionEmotes[0])
-            await message.addReaction(reactionEmotes[1])
-            await message.addReaction(reactionEmotes[2])
+            await addReactions(message)
 
             this.client.waitFor("messageReactionAdd").then( async (reactionAdd: [] | [reaction: MessageReaction, user: User]) => {
                 await this.getVideoDetails(ctx, data, message, reactionAdd[0])
@@ -54,16 +51,8 @@ export class Video extends Command {
     private async getVideoDetails(ctx: CommandContext, data: any, message: Message, reaction: undefined | MessageReaction) {
         await message.delete()
 
-        let videoId = ""
-        reactionEmotes.forEach( emote => {
-            if(reaction?.emoji.name == emote) {
-                videoId = data.items[reactionEmotes.indexOf(emote)].id.videoId
-            }
-        })
-
+        const videoId = getItemIdFromReaction(data, reaction)
         const videoData = await getVideoById(videoId)
-
-        console.log(videoData)
 
         const channelEmbed = new Embed({
             title: `Video: \`${videoData.items[0].snippet.title}\``,

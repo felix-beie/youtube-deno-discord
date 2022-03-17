@@ -1,5 +1,5 @@
 import "https://deno.land/x/dotenv@v3.2.0/load.ts"
-export { CommandClient, Command, Role, Extension, Intents, Embed } from "https://deno.land/x/harmony@v2.5.1/mod.ts"
+export { CommandClient, Command, Role, Extension, Intents, Embed, Message, MessageReaction } from "https://deno.land/x/harmony@v2.5.1/mod.ts"
 export type { ContentArgument, CommandContext } from "https://deno.land/x/harmony@v2.5.1/mod.ts"
 export { assert } from "https://deno.land/std@0.128.0/testing/asserts.ts"
 export * from "https://deno.land/x/soxa@1.4/mod.ts"

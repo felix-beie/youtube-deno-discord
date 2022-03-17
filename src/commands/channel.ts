@@ -1,8 +1,7 @@
 import { Command, CommandContext, ContentArgument, CommandClient } from "../../deps.ts"
 import { Embed, Message, MessageReaction, User } from "https://deno.land/x/harmony@v2.5.1/mod.ts"
 import { searchChannel, getChannelById } from "../utility/youtubeAPI.ts"
-
-const reactionEmotes = ["1️⃣", "2️⃣", "3️⃣"]
+import { addReactions, getItemIdFromReaction } from "../utility/utilityFunctions.ts"
 
 export class Channel extends Command {
     name = "channel"
@@ -40,9 +39,7 @@ export class Channel extends Command {
         })
 
         await ctx.message.reply(embed).then( async message => {
-            await message.addReaction(reactionEmotes[0])
-            await message.addReaction(reactionEmotes[1])
-            await message.addReaction(reactionEmotes[2])
+            await addReactions(message)
 
             this.client.waitFor("messageReactionAdd").then( async (reactionAdd: [] | [reaction: MessageReaction, user: User]) => {
                 await this.getChannelDetails(ctx, data, message, reactionAdd[0])
@@ -54,13 +51,7 @@ export class Channel extends Command {
     private async getChannelDetails(ctx: CommandContext, data: any ,message: Message, reaction: undefined | MessageReaction) {
         await message.delete()
 
-        let channelId = ""
-        reactionEmotes.forEach( emote => {
-            if(reaction?.emoji.name == emote) {
-                channelId = data.items[reactionEmotes.indexOf(emote)].id.channelId
-            }
-        })
-
+        const channelId = getItemIdFromReaction(data, reaction)
         const channelData = await getChannelById(channelId)
 
         const channelEmbed = new Embed({
