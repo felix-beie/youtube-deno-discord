@@ -9,23 +9,24 @@ export class YoutubeExtension extends Extension {
 
     constructor(client: CommandClient) {
         super(client)
-        const youtube = new Youtube()
+        const youtube = new Youtube(client)
         this.commands.add(youtube)
+        Youtube.allSubCommands = youtube.getSubCommands()
         console.log(`\t+ ${this.name} Extension loaded.`)
     }
 }
 
 export class Youtube extends Command {
     name = "youtube"
-    subCommands = [ new Help(), new Channel(), new Video() ]
     usage = "**USAGE**: !youtube "
     description = "Base command for all youtube functionality of the bot"
+    client: CommandClient
     static allSubCommands: Command[]
 
-    constructor() {
+    constructor(client: CommandClient) {
         super()
-        this.subCommands = [ new Help(), new Channel(), new Video() ]
-        Youtube.allSubCommands = this.subCommands
+        this.client = client
+        this.subCommands = [ new Help(), new Channel(client), new Video(client) ]
     }
 
     execute(ctx: CommandContext): void {

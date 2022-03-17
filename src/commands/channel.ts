@@ -1,6 +1,5 @@
-import { Command, CommandContext, soxa, ContentArgument } from "../../deps.ts"
+import { Command, CommandContext, soxa, ContentArgument, CommandClient } from "../../deps.ts"
 import { Embed, Message, MessageReaction, User } from "https://deno.land/x/harmony@v2.5.1/mod.ts"
-import { client } from "../../client.ts"
 
 const GOOGLE_API_KEY = Deno.env.get("GOOGLE_API_KEY")
 const API_BASE_URL = "https://www.googleapis.com/youtube/v3/"
@@ -13,13 +12,15 @@ export class Channel extends Command {
     description = "Shows a list of searched channels"
     contentArg: ContentArgument = { name: "channel_title", match: "content" }
     args = [ this.contentArg ]
+    client: CommandClient
+
+    constructor(client: CommandClient) {
+        super()
+        this.client = client
+    }
 
     onMissingArgs(ctx: CommandContext): void {
         ctx.message.reply(this.usage)
-    }
-
-    onError(_ctx: CommandContext, err: Error) {
-        console.error(err)
     }
 
     async execute(ctx: CommandContext): Promise<void> {
@@ -42,21 +43,13 @@ export class Channel extends Command {
         })
 
         await ctx.message.reply(embed).then( async message => {
-            //await this.addReactions(message)
             await message.addReaction(reactionEmotes[0])
             await message.addReaction(reactionEmotes[1])
             await message.addReaction(reactionEmotes[2])
 
-            client.waitFor("messageReactionAdd").then( async (reactionAdd: [] | [reaction: MessageReaction, user: User]) => {
+            this.client.waitFor("messageReactionAdd").then( async (reactionAdd: [] | [reaction: MessageReaction, user: User]) => {
                 await this.getChannelDetails(ctx, data, message, reactionAdd[0])
             })
-        })
-    }
-
-    // currently not in use, async doesn't work as expected
-    private async addReactions (message: Message): Promise<void> {
-        await reactionEmotes.forEach( async emote => {
-            await message.addReaction(emote)
         })
     }
 
@@ -91,6 +84,6 @@ export class Channel extends Command {
             color: 0xDE3C47
         })
 
-        ctx.message.reply(channelEmbed)
+        await ctx.message.reply(channelEmbed)
     }
 }

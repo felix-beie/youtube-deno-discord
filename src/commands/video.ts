@@ -1,6 +1,5 @@
-import { Command, CommandContext, soxa, ContentArgument } from "../../deps.ts"
+import { Command, CommandContext, soxa, ContentArgument, CommandClient } from "../../deps.ts"
 import { Embed, Message, MessageReaction, User } from "https://deno.land/x/harmony@v2.5.1/mod.ts"
-import { client } from "../../client.ts"
 
 const GOOGLE_API_KEY = Deno.env.get("GOOGLE_API_KEY")
 const API_BASE_URL = "https://www.googleapis.com/youtube/v3/"
@@ -13,21 +12,21 @@ export class Video extends Command {
     description = "Shows a list of searched videos"
     contentArg: ContentArgument = { name: "video_title", match: "content" }
     args = [ this.contentArg ]
+    client: CommandClient
+
+    constructor(client: CommandClient) {
+        super()
+        this.client = client
+    }
 
     onMissingArgs(ctx: CommandContext): void {
         ctx.message.reply(this.usage)
-    }
-
-    onError(_ctx: CommandContext, err: Error) {
-        console.error(err)
     }
 
     async execute(ctx: CommandContext): Promise<void> {
         const search_param = ctx.rawArgs.join(" ")
         const req = await soxa.get(API_BASE_URL + "search?part=snippet&maxResults=3&q=" + encodeURIComponent(search_param) + "&type=video&key=" + GOOGLE_API_KEY)
         const data = req.data
-
-        console.log(data)
 
         const embed = new Embed({
             title: `Search results for \`${search_param}\``, 
@@ -48,7 +47,7 @@ export class Video extends Command {
             await message.addReaction(reactionEmotes[1])
             await message.addReaction(reactionEmotes[2])
 
-            client.waitFor("messageReactionAdd").then( async (reactionAdd: [] | [reaction: MessageReaction, user: User]) => {
+            this.client.waitFor("messageReactionAdd").then( async (reactionAdd: [] | [reaction: MessageReaction, user: User]) => {
                 await this.getVideoDetails(ctx, data, message, reactionAdd[0])
             })
         })
