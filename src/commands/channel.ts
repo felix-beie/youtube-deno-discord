@@ -6,9 +6,9 @@ const reactionEmotes = ["1️⃣", "2️⃣", "3️⃣"]
 
 export class Channel extends Command {
     name = "channel"
-    usage = "**USAGE**: !youtube channel [CHANNEL TITLE]"
+    usage = "**USAGE**: !youtube channel [CHANNEL_TITLE]"
     description = "Shows a list of searched channels"
-    contentArg: ContentArgument = { name: "channel_title", match: "content" }
+    contentArg: ContentArgument = { name: "CHANNEL_TITLE", match: "content" }
     args = [ this.contentArg ]
     client: CommandClient
 

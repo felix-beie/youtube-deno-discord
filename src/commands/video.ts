@@ -6,9 +6,9 @@ const reactionEmotes = ["1️⃣", "2️⃣", "3️⃣"]
 
 export class Video extends Command {
     name = "video"
-    usage = "**USAGE**: !youtube video [VIDEO TITLE]"
+    usage = "**USAGE**: !youtube video [VIDEO_TITLE]"
     description = "Shows a list of searched videos"
-    contentArg: ContentArgument = { name: "video_title", match: "content" }
+    contentArg: ContentArgument = { name: "VIDEO_TITLE", match: "content" }
     args = [ this.contentArg ]
     client: CommandClient
 
