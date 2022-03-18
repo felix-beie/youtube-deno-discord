@@ -2,7 +2,7 @@ import { Command } from "../../deps.ts"
 
 export function generateSubUsage(subCommands: Command[]): string {
     let genSubUsage = "["
-    if (subCommands != []) {
+    if (subCommands.length != 0) {
         subCommands.forEach( (command: Command) => {
             genSubUsage += command.name + " | "
         })
