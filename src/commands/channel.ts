@@ -28,27 +28,28 @@ export class Channel extends Command {
             title: `Search results for \`${search_param}\``, 
             description: 
                 `\nFound \`${data.pageInfo.totalResults}\` channels / Displaying the top \`3\` results\n
-                :one: **Channel 1:** \`${data.items[0].snippet.title}\`
-                *Description:*\n ${data.items[0].snippet.description}\n
-                :two: **Channel 2:** \`${data.items[1].snippet.title}\`
-                *Description:* ${data.items[1].snippet.description}\n
-                :three: **Channel 3: ** \`${data.items[2].snippet.title}\`
-                *Description:* ${data.items[2].snippet.description}\n
+                :one: **Channel 1:** \`${data.items[0]?.snippet?.title ? data.items[0].snippet.title : "*No result found*"}\`
+                *Description:*\n ${data.items[0]?.snippet?.description ? data.items[0].snippet.description  : "*No description available*"}\n
+                :two: **Channel 2:** \`${data.items[1]?.snippet?.title ? data.items[1].snippet.title : "*No result found*"}\`
+                *Description:* ${data.items[1]?.snippet?.description ? data.items[1].snippet.description : "*No description available*"}\n
+                :three: **Channel 3: ** \`${data.items[2]?.snippet?.title ? data.items[2].snippet.title : "*No result found*"}\`
+                *Description:* ${data.items[2]?.snippet?.description ? data.items[2].snippet.description : "*No description available*"}\n
                 \`Select one of the channels with the corresponding Reaction below to get detailed channel information\``,
             color: 0xDE3C47
         })
 
-        await ctx.message.reply(embed).then( async message => {
-            await addReactions(message)
-
+        const message = await ctx.message.reply(embed)
+        await addReactions(message)
+        
+        setTimeout(() => {
             this.client.waitFor("messageReactionAdd").then( async (reactionAdd: [] | [reaction: MessageReaction, user: User]) => {
                 await this.getChannelDetails(ctx, data, message, reactionAdd[0])
             })
-        })
+        }, 100)
     }
 
     // deno-lint-ignore no-explicit-any
-    private async getChannelDetails(ctx: CommandContext, data: any ,message: Message, reaction: undefined | MessageReaction) {
+    private async getChannelDetails(ctx: CommandContext, data: any ,message: Message, reaction: undefined | MessageReaction): Promise<void> {
         await message.delete()
 
         const channelId = getItemIdFromReaction(data, reaction)
@@ -57,16 +58,16 @@ export class Channel extends Command {
         const channelEmbed = new Embed({
             title: `Channel: \`${channelData.items[0].snippet.title}\``,
             thumbnail: channelData.items[0].snippet.thumbnails.default,
-            description: 
-                `**Description:**\n ${channelData.items[0].snippet.description}\n
+            description:
+                `**Description:**\n ${channelData.items[0]?.snippet?.description ? channelData.items[0].snippet?.description : "*No description available*"}\n
                 **Channel Link:**\n https://www.youtube.com/channel/${channelId}`,
             fields: [
-                { name: "Country", value: channelData.items[0].snippet.country, inline: true }, 
-                { name: "Subscribers", value: channelData.items[0].statistics.subscriberCount, inline: true }, 
-                { name: "Subscribers hidden", value: channelData.items[0].statistics.hiddenSubscriberCount, inline: true },
-                { name: "Views", value: channelData.items[0].statistics.viewCount, inline: true}, 
-                { name: "Videos", value: channelData.items[0].statistics.videoCount, inline: true },
-                { name: "Created Channel", value: channelData.items[0].snippet.publishedAt, inline: true },
+                { name: "Country", value: channelData.items[0]?.snippet?.country ? channelData.items[0].snippet.country : "*-*", inline: true },
+                { name: "Subscribers", value: channelData.items[0]?.statistics?.subscriberCount ? channelData.items[0].statistics.subscriberCount : "*-*", inline: true }, 
+                { name: "Subscribers hidden", value: channelData.items[0]?.statistics?.hiddenSubscriberCount ? channelData.items[0].statistics.hiddenSubscriberCount : "*-*", inline: true },
+                { name: "Views", value: channelData.items[0]?.statistics?.viewCount ? channelData.items[0].statistics.viewCount : "*-*", inline: true}, 
+                { name: "Videos", value: channelData.items[0]?.statistics?.videoCount ? channelData.items[0].statistics.videoCount : "*-*", inline: true },
+                { name: "Created Channel", value: channelData.items[0]?.snippet?.publishedAt, inline: true },
             ],
             color: 0xDE3C47
         })

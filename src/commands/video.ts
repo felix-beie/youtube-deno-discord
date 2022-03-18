@@ -27,28 +27,29 @@ export class Video extends Command {
         const embed = new Embed({
             title: `Search results for \`${search_param}\``, 
             description:
-                `\nFound \`${data.pageInfo.totalResults}\` videos / Displaying the top \`3\` results\n
-                :one: **Video 1:** \`${data.items[0].snippet.title}\`
-                *Description:*\n ${data.items[0].snippet.description}\n
-                :two: **Video 2:** \`${data.items[1].snippet.title}\`
-                *Description:* ${data.items[1].snippet.description}\n
-                :three: **Video 3: ** \`${data.items[2].snippet.title}\`
-                *Description:* ${data.items[2].snippet.description}\n
+                `\nFound \`${data.pageInfo?.totalResults}\` videos / Displaying the top \`3\` results\n
+                :one: **Video 1:** \`${data.items[0]?.snippet?.title ? data.items[0].snippet.title : "*No result found*"}\`
+                *Description:*\n ${data.items[0]?.snippet?.description ? data.items[0].snippet.description : "*No description available*"}\n
+                :two: **Video 2:** \`${data.items[1]?.snippet?.title ? data.items[1].snippet.title : "*No result found*"}\`
+                *Description:* ${data.items[1]?.snippet?.description ? data.items[1].snippet.description : "*No description available*"}\n
+                :three: **Video 3: ** \`${data.items[2]?.snippet?.title ? data.items[2].snippet.title : "*No result found*"}\`
+                *Description:* ${data.items[2].snippet.description ? data.items[2].snippet.description : "*No description available*"}\n
                 \`Select one of the videos with the corresponding Reaction below to get detailed video information\``,
             color: 0xDE3C47
         })
 
-        await ctx.message.reply(embed).then( async message => {
-            await addReactions(message)
+        const message = await ctx.message.reply(embed)
+        await addReactions(message)
 
+        setTimeout(() => {
             this.client.waitFor("messageReactionAdd").then( async (reactionAdd: [] | [reaction: MessageReaction, user: User]) => {
                 await this.getVideoDetails(ctx, data, message, reactionAdd[0])
             })
-        })
+        }, 100)
     }
 
     // deno-lint-ignore no-explicit-any
-    private async getVideoDetails(ctx: CommandContext, data: any, message: Message, reaction: undefined | MessageReaction) {
+    private async getVideoDetails(ctx: CommandContext, data: any, message: Message, reaction: undefined | MessageReaction): Promise<void> {
         await message.delete()
 
         const videoId = getItemIdFromReaction(data, reaction)
@@ -58,16 +59,16 @@ export class Video extends Command {
             title: `Video: \`${videoData.items[0].snippet.title}\``,
             thumbnail: videoData.items[0].snippet.thumbnails.default,
             description: 
-                `**Description:**\n ${videoData.items[0].snippet.description}\n
-                **Video Link:**\n https://www.youtube.com/watch?v=${videoData.items[0].id}
+                `**Description:**\n ${videoData.items[0]?.snippet?.description ? videoData.items[0].snippet.description : "*No description available*"}\n
+                **Video Link:**\n https://www.youtube.com/watch?v=${videoId}
                 **Channel Link:**\n https://www.youtube.com/channel/${videoData.items[0].snippet.channelId}`,
             fields: [
-                { name: "Channel", value: videoData.items[0].snippet.channelTitle, inline: true }, 
-                { name: "Views", value: videoData.items[0].statistics.viewCount, inline: true }, 
-                { name: "Likes", value: videoData.items[0].statistics.likeCount, inline: true },
-                { name: "Language", value: videoData.items[0].snippet.defaultAudioLanguage, inline: true },
-                { name: "Comments", value: videoData.items[0].statistics.viewCount, inline: true}, 
-                { name: "Video published", value: videoData.items[0].snippet.publishedAt, inline: true },
+                { name: "Channel", value: videoData.items[0].snippet?.channelTitle ? videoData.items[0].snippet.channelTitle : "*-*", inline: true }, 
+                { name: "Views", value: videoData.items[0].statistics?.viewCount ? videoData.items[0].statistics.viewCount : "*-*", inline: true }, 
+                { name: "Likes", value: videoData.items[0].statistics?.likeCount ? videoData.items[0].statistics.likeCount : "*-*", inline: true },
+                { name: "Language", value: videoData.items[0].snippet?.defaultAudioLanguage ? videoData.items[0].snippet.defaultAudioLanguage : "*-*", inline: true },
+                { name: "Comments", value: videoData.items[0].statistics?.viewCount ? videoData.items[0].statistics.viewCount : "*-*", inline: true}, 
+                { name: "Video published", value: videoData.items[0].snippet?.publishedAt, inline: true },
             ],
             color: 0xDE3C47
         })
