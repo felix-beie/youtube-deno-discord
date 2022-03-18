@@ -1,7 +1,7 @@
 import { Command, CommandContext, ContentArgument, CommandClient } from "../../deps.ts"
 import { Embed, Message, MessageReaction, User } from "https://deno.land/x/harmony@v2.5.1/mod.ts"
 import { searchVideo, getVideoById } from "../utility/youtubeAPI.ts"
-import { addReactions, getItemIdFromReaction } from "../utility/utilityFunctions.ts"
+import { getItemSearchDescription, addReactions, getItemIdFromReaction } from "../utility/utilityFunctions.ts"
 
 export class Video extends Command {
     name = "video"
@@ -24,35 +24,29 @@ export class Video extends Command {
         const search_param = ctx.rawArgs.join(" ")
         const data = await searchVideo(search_param)
 
+        const videoSearchDescription = getItemSearchDescription("video", data)
+
         const embed = new Embed({
             title: `Search results for \`${search_param}\``, 
-            description:
-                `\nFound \`${data.pageInfo?.totalResults}\` videos / Displaying the top \`3\` results\n
-                :one: **Video 1:** \`${data.items[0]?.snippet?.title ? data.items[0].snippet.title : "*No result found*"}\`
-                *Description:*\n ${data.items[0]?.snippet?.description ? data.items[0].snippet.description : "*No description available*"}\n
-                :two: **Video 2:** \`${data.items[1]?.snippet?.title ? data.items[1].snippet.title : "*No result found*"}\`
-                *Description:* ${data.items[1]?.snippet?.description ? data.items[1].snippet.description : "*No description available*"}\n
-                :three: **Video 3: ** \`${data.items[2]?.snippet?.title ? data.items[2].snippet.title : "*No result found*"}\`
-                *Description:* ${data.items[2].snippet.description ? data.items[2].snippet.description : "*No description available*"}\n
-                \`Select one of the videos with the corresponding Reaction below to get detailed video information\``,
+            description: videoSearchDescription,
             color: 0xDE3C47
         })
 
         const message = await ctx.message.reply(embed)
-        await addReactions(message)
+        await addReactions(message, data)
 
         setTimeout(() => {
             this.client.waitFor("messageReactionAdd").then( async (reactionAdd: [] | [reaction: MessageReaction, user: User]) => {
                 await this.getVideoDetails(ctx, data, message, reactionAdd[0])
             })
-        }, 100)
+        }, 500)
     }
 
     // deno-lint-ignore no-explicit-any
     private async getVideoDetails(ctx: CommandContext, data: any, message: Message, reaction: undefined | MessageReaction): Promise<void> {
         await message.delete()
 
-        const videoId = getItemIdFromReaction(data, reaction)
+        const videoId = getItemIdFromReaction("video", data, reaction)
         const videoData = await getVideoById(videoId)
 
         const channelEmbed = new Embed({
