@@ -49,6 +49,8 @@ export class Video extends Command {
         const videoId = getItemIdFromReaction("video", data, reaction)
         const videoData = await getVideoById(videoId)
 
+        console.log(videoData.items)
+
         const channelEmbed = new Embed({
             title: `Video: \`${videoData.items[0].snippet.title}\``,
             thumbnail: videoData.items[0].snippet.thumbnails.default,
@@ -61,7 +63,7 @@ export class Video extends Command {
                 { name: "Views", value: videoData.items[0].statistics?.viewCount ? videoData.items[0].statistics.viewCount : "*-*", inline: true }, 
                 { name: "Likes", value: videoData.items[0].statistics?.likeCount ? videoData.items[0].statistics.likeCount : "*-*", inline: true },
                 { name: "Language", value: videoData.items[0].snippet?.defaultAudioLanguage ? videoData.items[0].snippet.defaultAudioLanguage : "*-*", inline: true },
-                { name: "Comments", value: videoData.items[0].statistics?.viewCount ? videoData.items[0].statistics.viewCount : "*-*", inline: true}, 
+                { name: "Comments", value: videoData.items[0].statistics?.commentCount ? videoData.items[0].statistics.commentCount : "*-*", inline: true}, 
                 { name: "Video published", value: videoData.items[0].snippet?.publishedAt, inline: true },
             ],
             color: 0xDE3C47
