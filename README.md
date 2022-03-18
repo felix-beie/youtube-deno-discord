@@ -5,12 +5,14 @@
 **Youtube Deno Discord is a Youtube Extension for a Deno-based [Harmony](https://deno.land/x/harmony) Discord Bot**
 
 ## Functionalites
-- get detailed information about channels
-- get a list of trending videos
-- and more
+get detailed information about:
+- channels
+- videos
+
+For more information on how the commands actually work and some examples, have a look at the [commands](https://github.com/felix-beie/youtube-deno-discord/wiki/Commands) page.
 
 ## Usage
-To use this extension it is **necessary** to create a `.env` file in the root directory of your Harmony bot. Within that file you need to include your *google api key* from Google:
+To use this extension it is **necessary** to create a `.env` file in the root directory of your Harmony bot. Within that file you need to include your [*api key*](https://github.com/felix-beie/youtube-deno-discord/wiki/API-Key) from Google:
 ```  
 GOOGLE_API_KEY=
 ``` 
