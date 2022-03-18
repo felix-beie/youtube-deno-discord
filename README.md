@@ -9,7 +9,7 @@ get detailed information about:
 - channels
 - videos
 
-For more information on how the commands actually work and some examples, have a look at the wiki page [commands](https://github.com/felix-beie/youtube-deno-discord/wiki/Commands)
+For more information on how the commands actually work and some examples, have a look at the [commands](https://github.com/felix-beie/youtube-deno-discord/wiki/Commands) page.
 
 ## Usage
 To use this extension it is **necessary** to create a `.env` file in the root directory of your Harmony bot. Within that file you need to include your [*api key*](https://github.com/felix-beie/youtube-deno-discord/wiki/API-Key) from Google:
