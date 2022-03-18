@@ -34,3 +34,5 @@ client.on('ready', () => {
 
 client.connect('BOT_TOKEN', Intents.GuildMembers)
 ```
+## Execute Unit Tests
+Tests do run automatically with GitHub actions on push or pull request to the main branch
