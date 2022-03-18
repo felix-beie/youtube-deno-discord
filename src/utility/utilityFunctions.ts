@@ -13,7 +13,12 @@ export function getItemIdFromReaction(data: any, reaction: undefined | MessageRe
     let id = ""
     reactionEmotes.forEach( emote => {
         if(reaction?.emoji.name == emote) {
-            id = data.items[reactionEmotes.indexOf(emote)].id.channelId
+            if (data.items[reactionEmotes.indexOf(emote)].id.channelId) {
+                id = data.items[reactionEmotes.indexOf(emote)].id.channelId
+            }
+            else {
+                id = data.items[reactionEmotes.indexOf(emote)].id.videoId
+            }
         }
     })
     return id
