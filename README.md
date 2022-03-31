@@ -21,7 +21,7 @@ GOOGLE_API_KEY=
 This is a simple example how this extension can be used:
 ```js
 import { CommandClient, Intents } from 'https://deno.land/x/harmony/mod.ts'
-import { YoutubeExtension } from 'https://deno.land/x/youtube-deno-discord/mod.ts'
+import { YoutubeExtension } from 'https://deno.land/x/youtube_deno_discord/mod.ts'
 
 const client = new CommandClient({
   prefix: '!'
