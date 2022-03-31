@@ -1,5 +1,5 @@
 // deno-lint-ignore-file no-explicit-any
-import { getItemSearchDescription, /*addReactions,*/ getItemIdFromReaction } from "../../src/utility/utilityFunctions.ts"
+import { getItemSearchDescription, getItemIdFromReaction } from "../../src/utility/utilityFunctions.ts"
 import { assertEquals } from "../../deps.ts"
 
 const testData = [{
@@ -32,12 +32,6 @@ Deno.test("getItemSearchDescription", (): void => {
         assertEquals(description, compareDescription[i])
     }
 })
-
-/*Deno.test("addReactions", async (): Promise<void> => {
-    const message: any = { }
-
-    await addReactions(message, testData[1])
-})*/
 
 Deno.test("getItemIdFromReaction", (): void => {
     const reaction: any = {
