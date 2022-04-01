@@ -20,8 +20,10 @@ GOOGLE_API_KEY=
 ## Example
 This is a simple example how this extension can be used:
 ```js
-import { CommandClient, Intents } from 'https://deno.land/x/harmony/mod.ts'
+import { CommandClient, Intents } from 'https://deno.land/x/harmony@2,5.1/mod.ts'
 import { YoutubeExtension } from 'https://deno.land/x/youtube_deno_discord/mod.ts'
+
+const BOT_TOKEN = Deno.env.get("BOT_TOKEN")
 
 const client = new CommandClient({
   prefix: '!'
@@ -34,7 +36,7 @@ client.on('ready', () => {
   console.log(`Ready! User: ${client.user?.tag}`)
 })
 
-client.connect('BOT_TOKEN', Intents.GuildMembers)
+client.connect(BOT_TOKEN, Intents.None)
 ```
 ## Execute Unit Tests
 Tests do run automatically with GitHub actions on push or pull request to the main branch
