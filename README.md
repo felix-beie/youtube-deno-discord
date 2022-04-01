@@ -22,7 +22,7 @@ You can also provide your Discord `BOT_TOKEN`, so you can just copy the given ex
 ## Example
 This is a simple example how this extension can be used:
 ```js
-import { CommandClient, Intents } from 'https://deno.land/x/harmony@2.5.1/mod.ts'
+import { CommandClient, Intents } from 'https://deno.land/x/harmony@v2.5.1/mod.ts'
 import { YoutubeExtension } from 'https://deno.land/x/youtube_deno_discord/mod.ts'
 
 const BOT_TOKEN = Deno.env.get("BOT_TOKEN")
