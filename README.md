@@ -15,7 +15,9 @@ For more information on how the commands actually work and some examples, have a
 To use this extension it is **necessary** to create a `.env` file in the root directory of your Harmony bot. Within that file you need to include your [*api key*](https://github.com/felix-beie/youtube-deno-discord/wiki/API-Key) from Google:
 ```  
 GOOGLE_API_KEY=
+BOT_TOKEN=
 ``` 
+You can also provide your Discord `BOT_TOKEN`, so you can just copy the given example below. Keep in mind that the extension needs permissions to read & send messages.
 
 ## Example
 This is a simple example how this extension can be used:
