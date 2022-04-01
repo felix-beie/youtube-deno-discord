@@ -17,7 +17,7 @@ To use this extension it is **necessary** to create a `.env` file in the root di
 GOOGLE_API_KEY=
 BOT_TOKEN=
 ``` 
-You can also provide your Discord `BOT_TOKEN`, so you can just copy the given example below. Keep in mind that the extension needs permissions to read & send messages.
+You can also provide your Discord `BOT_TOKEN`, so you can just copy the given example below. Keep in mind that the extension needs permissions to manage messages and add reactions.
 
 ## Example
 This is a simple example how this extension can be used:
